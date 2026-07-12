@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import { connectDB } from './config/db';
 import userRoutes from './routes/user.route';
 import foodRoutes from './routes/food.route';
+import requestRoutes from './routes/request.route';
 
 dotenv.config();
 
@@ -21,10 +22,11 @@ app.use(express.json());
 
 app.use('/api/users', userRoutes);
 app.use('/api/foods', foodRoutes);
+app.use('/api/requests', requestRoutes);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Food Link Backend is Running Successfully! 🚀');
- });
+});
 
 const startServer = async () => {
   try {
