@@ -8,6 +8,7 @@ import { connectDB } from './config/db';
 import userRoutes from './routes/user.route';
 import foodRoutes from './routes/food.route';
 import requestRoutes from './routes/request.route';
+import analyticsRoutes from './routes/analytics.route';
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use('/api/users', userRoutes);
 app.use('/api/foods', foodRoutes);
 app.use('/api/requests', requestRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Food Link Backend is Running Successfully! 🚀');
