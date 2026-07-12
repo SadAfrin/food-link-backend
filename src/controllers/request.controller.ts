@@ -109,3 +109,20 @@ export const updateRequestStatus = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
+export const getRecipientRequests = async (req: Request, res: Response) => {
+  try {
+    const { recipientId } = req.params;
+    const db = await connectDB();
+    const requestCollection = db.collection<IFoodRequest>('food_requests');
+
+    const requests = await requestCollection
+      .find({ recipientId: new ObjectId(recipientId) })
+      .sort({ createdAt: -1 })
+      .toArray();
+
+    res.status(200).json({ success: true, data: requests });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
