@@ -21,7 +21,7 @@ app.use(cors({
 }));
 app.use(express.json());
 
-app.use('/api/users', userRoutes);
+app.use('/api/user', userRoutes);
 app.use('/api/foods', foodRoutes);
 app.use('/api/requests', requestRoutes);
 app.use('/api/analytics', analyticsRoutes);

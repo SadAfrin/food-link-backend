@@ -1,7 +1,7 @@
 import { Response } from 'express';
 import { AuthenticatedRequest } from '../middlewares/auth';
 import { connectDB } from '../config/db';
-import { ObjectId } from 'mongodb';
+import { ObjectId, Filter } from 'mongodb';
 
 export const getMerchantAnalytics = async (req: AuthenticatedRequest, res: Response) => {
   try {
@@ -11,14 +11,19 @@ export const getMerchantAnalytics = async (req: AuthenticatedRequest, res: Respo
     const foodCollection = db.collection('food_items');
     const requestCollection = db.collection('food_requests');
 
+    // Cast the filter explicitly to resolve TS2769 overload issues
+    const baseFilter = { merchantId: new ObjectId(merchantId) } as Filter<any>;
+
     // 1. Count total food items listed by this merchant
-    const totalListed = await foodCollection.countDocuments({ merchantId: new ObjectId(merchantId) });
+    const totalListed = await foodCollection.countDocuments(baseFilter);
 
     // 2. Count active/available food donations
-    const activeDonations = await foodCollection.countDocuments({ 
+    const activeFilter = { 
       merchantId: new ObjectId(merchantId), 
       status: 'available' 
-    });
+    } as Filter<any>;
+    
+    const activeDonations = await foodCollection.countDocuments(activeFilter);
 
     // 3. Aggregate request statistics grouped by their status
     const requestStats = await requestCollection.aggregate([

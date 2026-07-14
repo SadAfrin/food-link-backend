@@ -7,7 +7,7 @@ export const registerUser = async (req: Request, res: Response) => {
     const { name, email, role, location, photo, phone } = req.body;
 
     const db = await connectDB();
-    const usersCollection = db.collection<IUser>('users'); 
+    const usersCollection = db.collection<IUser>('user'); 
 
     const existingUser = await usersCollection.findOne({ email });
     if (existingUser) {
